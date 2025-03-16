@@ -1,2 +1,5 @@
 # VSNet
-VSNet: Focusing on the Linguistic Characteristics of Sign Language (accepted by CVPR2025).
+This is the official version of VSNet.
+
+The code will be released soon.
+
