@@ -62,7 +62,7 @@ class MultiHeadSelfAttention(nn.Module):
         trunc_normal_(self.relative_position_bias_table, std=.02)
         self.ones = torch.ones(partition_size[1], partition_size[1], num_heads)
 
-    def _get_relative_positional_bias(self):  # 算出attention后，给每组T之间的attn的加上偏置。如第2组对1组attn的偏置和1组对2组attn的偏置相同
+    def _get_relative_positional_bias(self):  
             relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
                 self.partition_size[0], self.partition_size[0], -1)
             relative_position_bias = relative_position_bias.unsqueeze(1).unsqueeze(3).repeat(1, self.partition_size[1], 1, self.partition_size[1], 1, 1).view(self.attn_area, self.attn_area, -1)
