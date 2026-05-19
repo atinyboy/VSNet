@@ -74,5 +74,13 @@ or
 
 depending on the desired grouping setting.
 
+## Acknowledgement
+
+This project is partially based on the following open-source repositories and their corresponding papers:
+
+- [CVPR21Chal-SLR](https://github.com/jackyjsy/CVPR21Chal-SLR)
+- [SkateFormer](https://github.com/KAIST-VICLab/SkateFormer)
+
+We sincerely thank the authors for making their code and research publicly available.
 
 
