@@ -1,0 +1,52 @@
+seed: 1
+num_worker: 4
+work_dir: ./work_dir/wlasl_100/f4/
+#start_epoch: 0
+
+phase: train
+
+# feeder
+feeder: feeders.feeder_wlasl_44.Feeder
+train_feeder_args:
+  data_path: ./data/WLASL/train_100.pkl
+  num_cls: 100
+  data_type: 'j'
+  repeat: 10
+
+test_feeder_args:
+  data_path: ./data/WLASL/val_100.pkl
+  num_cls: 100
+  data_type: 'j'
+  repeat: 1
+
+# model
+model: model.VSNet_drop.VSNet
+model_args:
+  num_classes: 100
+  num_people: 1
+  num_points: 24
+  kernel_size: 7
+  num_heads: 32
+  attn_drop: 0.5
+  mlp_ratio: 1.0
+
+#optim
+optimizer: AdamW
+weight_decay: 0.1
+lr_scheduler: plateau  # cosine
+base_lr: 1e-3
+min_lr: 1e-5
+warmup_lr: 1e-7
+warmup_prefix: False
+warm_up_epoch: 15
+
+# training
+device: [0]
+batch_size: 32
+test_batch_size: 32
+num_epoch: 200
+nesterov: True
+grad_clip: True
+grad_max: 1.0
+loss_type: LSCE
+keep_rate: 0.9

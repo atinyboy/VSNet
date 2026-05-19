@@ -61,7 +61,7 @@ class MultiHeadSelfAttention(nn.Module):
         trunc_normal_(self.relative_position_bias_table, std=.02)
         self.ones = torch.ones(partition_size[1], partition_size[1], num_heads)
 
-    def _get_relative_positional_bias(self):  
+    def _get_relative_positional_bias(self):  # 算出attention后，给每组T之间的attn的加上偏置。如第2组对1组attn的偏置和1组对2组attn的偏置相同
             relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
                 self.partition_size[0], self.partition_size[0], -1)
             relative_position_bias = relative_position_bias.unsqueeze(1).unsqueeze(3).repeat(1, self.partition_size[1], 1, self.partition_size[1], 1, 1).view(self.attn_area, self.attn_area, -1)
@@ -71,9 +71,9 @@ class MultiHeadSelfAttention(nn.Module):
     def forward(self, input):
         B_, N, C = input.shape
         qkv = input.reshape(B_, N, 3, self.num_heads, -1).permute(2, 0, 3, 1, 4)
-        q, k, v = qkv.unbind(0)
+        q, k, v = qkv.unbind(0)  # 是否可以增加一个Linear
         q = q * self.scale
-        attn = q @ k.transpose(-2, -1)
+        attn = q @ k.transpose(-2, -1)             # 计算了32个组之间的attention
 
         # if self.rel:
         attn = attn + self._get_relative_positional_bias()
@@ -232,7 +232,6 @@ class VSNet(nn.Module):
                                block_size=41, residual=False)
         self.l2 = TCN_GCN_drop(64, embed_dim, graph2.A, [[6,6,6,6,6,6],[2,2,2,2,2,2]], groups=8, num_point=graph2.num_node, block_size=41)
         self.l3 = TCN_GCN_drop(embed_dim, embed_dim, graph3.A, None, groups=8, num_point=graph3.num_node, block_size=41)
-
 
         self.joint_person_embedding = nn.Parameter(torch.zeros(embed_dim, num_points * num_people))
         trunc_normal_(self.joint_person_embedding, std=.02)

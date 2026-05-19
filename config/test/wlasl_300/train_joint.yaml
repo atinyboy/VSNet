@@ -1,0 +1,61 @@
+seed: 1
+num_worker: 6
+work_dir: ./work_dir/wlasl_300_val/joint_2/
+start_epoch: 0
+weights: 'C:\Users\Administrator.DESKTOP-FKQVO4F\Desktop\研究生\项目申报书\3,手语聚类\code\SkateFormer-SLR\work_dir\wlasl_300_drop\joint_2\runs-169-187421.pt'
+save_score: True
+
+phase: test
+
+# feeder
+feeder: feeders.feeder_wlasl_2.Feeder
+train_feeder_args:
+  data_path: ./data/WLASL/train_300.pkl
+  num_cls: 300
+  data_type: 'j'
+  repeat: 10
+
+test_feeder_args:
+  data_path: ./data/WLASL/val_300.pkl
+  num_cls: 300
+  data_type: 'j'
+  repeat: 1
+
+# model
+model: model.SkateFormer_gcn_drop_2.SkateFormer_
+model_args:
+  num_classes: 300
+  num_people: 1
+  num_points: 24
+  kernel_size: 7
+  num_heads: 32
+  attn_drop: 0.5
+  head_drop: 0.0
+  rel: True
+  drop_path: 0.2
+  type_1_size: [8, 4]
+  type_2_size: [8, 6]
+  type_3_size: [8, 4]
+  type_4_size: [8, 6]
+  mlp_ratio: 1.0
+  index_t: True
+
+#optim
+optimizer: AdamW
+weight_decay: 0.1
+lr_scheduler: plateau
+base_lr: 1e-3
+min_lr: 1e-5
+warmup_lr: 1e-7
+warmup_prefix: False
+warm_up_epoch: 15
+
+# training
+device: [0]
+batch_size: 32
+test_batch_size: 32
+num_epoch: 250
+nesterov: True
+grad_clip: True
+grad_max: 1.0
+loss_type: LSCE
