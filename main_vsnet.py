@@ -216,44 +216,6 @@ class Processor():
 
             weights = OrderedDict([[k.split('module.')[-1], v.cuda(output_device)] for k, v in weights.items()])
 
-            # new_weight = {
-            #     (k.replace('stages.0.blocks.0.transformer', 'l4') if 'stages.0.blocks.0.transformer' in k else k): v for
-            #     k, v in weights.items()}
-            # new_weight = {
-            #     (k.replace('stages.0.blocks.1.transformer', 'l5') if 'stages.0.blocks.1.transformer' in k else k): v for
-            #     k, v in new_weight.items()}
-            # new_weight = {
-            #     (k.replace('stages.1.blocks.1.transformer', 'l7') if 'stages.1.blocks.1.transformer' in k else k): v for
-            #     k, v in new_weight.items()}
-            # new_weight = {
-            #     (k.replace('stages.1.blocks.0.transformer', 'l6') if 'stages.1.blocks.0.transformer' in k else k): v for
-            #     k, v in new_weight.items()}
-            # new_weight = {
-            #     (k.replace('stages.2.blocks.0.transformer', 'l8') if 'stages.2.blocks.0.transformer' in k else k): v for
-            #     k, v in new_weight.items()}
-            # new_weight = {
-            #     (k.replace('stages.2.blocks.1.transformer', 'l9') if 'stages.2.blocks.1.transformer' in k else k): v for
-            #     k, v in new_weight.items()}
-            # new_weight = {
-            #     (k.replace('stages.3.blocks.1.transformer', 'l11') if 'stages.3.blocks.1.transformer' in k else k): v
-            #     for k, v in new_weight.items()}
-            # new_weight = {
-            #     (k.replace('stages.3.blocks.0.transformer', 'l10') if 'stages.3.blocks.0.transformer' in k else k): v
-            #     for k, v in new_weight.items()}
-            #
-            # new_weight = {(k.replace('stages.1.blocks.0', 'l6') if 'stages.1.blocks.0' in k else k): v for k, v in
-            #               new_weight.items()}
-            # new_weight = {(k.replace('stages.2.blocks.0', 'l8') if 'stages.2.blocks.0' in k else k): v for k, v in
-            #               new_weight.items()}
-            # new_weight = {(k.replace('stages.3.blocks.0', 'l10') if 'stages.3.blocks.0' in k else k): v for k, v in
-            #               new_weight.items()}
-            #
-            # new_weight = {(k.replace('group_attn', 'pair_attn') if 'group_attn' in k else k): v for k, v in
-            #               new_weight.items()}
-            # new_weight = {(k.replace('head', 'fc') if 'head' in k else k): v for k, v in new_weight.items()}
-            #
-            # weights = new_weight
-
             keys = list(weights.keys())
             for w in self.arg.ignore_weights:
                 for key in keys:
